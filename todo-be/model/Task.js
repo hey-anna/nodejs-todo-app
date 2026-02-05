@@ -1,16 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const taskSchema = Schema({
-  task: {
-    type: String,
-    required: true,
+const taskSchema = Schema(
+  {
+    task: {
+      type: String,
+      required: true,
+    },
+    isComplete: {
+      type: Boolean,
+      required: true,
+    },
   },
-  isComplete: {
-    type: Boolean,
-    required: true,
-  },
-});
+  { timestamps: true }, // createdAt/updatedAt 자동 생성
+);
 
 const Task = mongoose.model("Task", taskSchema);
 

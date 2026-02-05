@@ -15,13 +15,15 @@ taskController.createTask = async (req, res) => {
 
 taskController.getTask = async (req, res) => {
   try {
-    const taskList = await Task.find({});
+    // const taskList = await Task.find({}, "-__v"); // 버전 정보 제외하기
+    const taskList = await Task.find({}).select("-__v"); // 버전 정보 제외하기
     res.status(200).json({ status: "ok", data: taskList });
   } catch (err) {
     res.status(400).json({ status: "fail", error: err });
   }
 };
 
+// 생성 날짜 보여주고 싶을 때 스키마 수정
 taskController.updateTask = async (req, res) => {
   try {
     const { id } = req.params;
