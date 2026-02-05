@@ -14,12 +14,14 @@ function App() {
   const [todoList, setTodoList] = useState([]);
   const [todoValue, setTodoValue] = useState("");
 
+  // 리스트 요청
   const getTasks = async () => {
     const response = await api.get("/tasks");
     console.log("Test : response", response);
     setTodoList(response.data.data);
   };
 
+  // 추가
   const addTask = async () => {
     try {
       const response = await api.post("/tasks", {
@@ -37,6 +39,18 @@ function App() {
       }
     } catch (err) {
       console.log("error", err);
+    }
+  };
+
+  // 삭제
+  const deleteTask = async (id) => {
+    try {
+      const response = await api.delete(`/tasks/${id}`);
+      if (response.status === 200) {
+        getTasks();
+      }
+    } catch (err) {
+      console.log("delete error", err);
     }
   };
 
@@ -63,7 +77,7 @@ function App() {
         </Col>
       </Row>
 
-      <TodoBoard todoList={todoList} />
+      <TodoBoard todoList={todoList} deleteTask={deleteTask} />
     </Container>
   );
 }
