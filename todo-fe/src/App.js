@@ -54,6 +54,22 @@ function App() {
     }
   };
 
+  // 끝남(완료 토글)
+  const toggleComplete = async (item) => {
+    try {
+      const response = await api.put(`/tasks/${item._id}`, {
+        task: item.task,
+        isComplete: !item.isComplete,
+      });
+
+      if (response.status === 200) {
+        getTasks();
+      }
+    } catch (err) {
+      console.log("toggle error", err);
+    }
+  };
+
   useEffect(() => {
     getTasks();
   }, []);
@@ -77,7 +93,11 @@ function App() {
         </Col>
       </Row>
 
-      <TodoBoard todoList={todoList} deleteTask={deleteTask} />
+      <TodoBoard
+        todoList={todoList}
+        deleteTask={deleteTask}
+        toggleComplete={toggleComplete}
+      />
     </Container>
   );
 }
