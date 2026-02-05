@@ -1,5 +1,6 @@
 // 1. 필요한 모듈 불러오기
 const express = require("express");
+const cors = require("cors");
 const mongoose = require("mongoose");
 const indexRouter = require("./routes/index");
 
@@ -7,6 +8,7 @@ const indexRouter = require("./routes/index");
 const app = express();
 
 // 3. 미들웨어 설정 (express 내장 파서 사용)
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
