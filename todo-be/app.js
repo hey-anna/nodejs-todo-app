@@ -5,6 +5,10 @@
 // - npm start    → .env.production 사용
 // 따라서 app.js에서는 require("dotenv").config()를 직접 호출하지 않음
 
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
