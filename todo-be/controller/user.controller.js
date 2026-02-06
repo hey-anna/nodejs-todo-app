@@ -50,4 +50,51 @@ userController.createUser = async (req, res) => {
   }
 };
 
+userController.loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // 입력값 검증
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "이메일과 비밀번호를 입력해주세요",
+      });
+    }
+
+    // DB에서 입력받은 이메일로 가입된 유저 조회
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "이메일 또는 비밀번호가 올바르지 않습니다",
+      });
+    }
+
+    // bcrypt.compare를 사용해 입력된 비밀번호와 DB에 저장된 해시 비밀번호 비교
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({
+        message: "이메일 또는 비밀번호가 올바르지 않습니다",
+      });
+    }
+
+    // JWT 토큰 발급(User 모델 메서드 사용)
+    const token = user.generateToken();
+
+    return res.status(200).json({
+      message: "로그인 성공",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        name: user.name,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "서버 오류 발생",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = userController;
