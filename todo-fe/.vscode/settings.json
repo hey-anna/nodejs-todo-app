@@ -1,8 +1,9 @@
 {
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "editor.formatOnSave": false,
 
   "eslint.validate": ["javascript", "javascriptreact"],
   "eslint.workingDirectories": [{ "mode": "auto" }]
