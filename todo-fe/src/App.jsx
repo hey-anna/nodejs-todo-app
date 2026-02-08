@@ -85,11 +85,7 @@ function App() {
         </Col>
       </Row>
 
-      <TodoBoard
-        todoList={todoList}
-        deleteTask={deleteTask}
-        toggleComplete={toggleComplete}
-      />
+      <TodoBoard todoList={todoList} deleteTask={deleteTask} toggleComplete={toggleComplete} />
     </Container>
   );
 }

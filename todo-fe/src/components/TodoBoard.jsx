@@ -6,11 +6,7 @@ const TodoBoard = ({ todoList, deleteTask, toggleComplete }) => {
       <h2>Todo List</h2>
       {todoList.length > 0 ? (
         todoList.map((item) => (
-          <TodoItem
-            item={item}
-            deleteTask={deleteTask}
-            toggleComplete={toggleComplete}
-          />
+          <TodoItem item={item} deleteTask={deleteTask} toggleComplete={toggleComplete} />
         ))
       ) : (
         <h2>There is no Item to show</h2>

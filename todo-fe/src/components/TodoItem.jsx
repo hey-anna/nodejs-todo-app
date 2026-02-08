@@ -8,16 +8,10 @@ const TodoItem = ({ item, deleteTask, toggleComplete }) => {
           <div className="todo-content">{item.task}</div>
 
           <div>
-            <button
-              className="button-delete"
-              onClick={() => deleteTask(item._id)}
-            >
+            <button className="button-delete" onClick={() => deleteTask(item._id)}>
               삭제
             </button>
-            <button
-              className="button-delete"
-              onClick={() => toggleComplete(item)}
-            >
+            <button className="button-delete" onClick={() => toggleComplete(item)}>
               끝남
             </button>
           </div>
