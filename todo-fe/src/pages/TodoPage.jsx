@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-
-import TodoBoard from "./components/TodoBoard";
+import TodoBoard from "../components/TodoBoard";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
-import api from "./utils/api";
+import api from "../utils/api";
 
-function App() {
+function TodoPage() {
   const [todoList, setTodoList] = useState([]);
   const [todoValue, setTodoValue] = useState("");
 
@@ -90,4 +88,4 @@ function App() {
   );
 }
 
-export default App;
+export default TodoPage;

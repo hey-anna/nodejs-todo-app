@@ -1,3 +1,15 @@
+/* index.css (전역 기본값만) */
+:root {
+  --brand: #7fc9de;
+  --brand-strong: #4fb3cf;
+  --text: #1f2937;
+  --muted: #4b5563;
+  --border: #bfe7f2;
+  --bg: #ffffff;
+
+  --page-bg: aliceblue; /* 페이지 배경 */
+}
+
 body {
   margin: 0;
   font-family:
@@ -5,6 +17,9 @@ body {
     "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  color: var(--text);
+  background-color: var(--page-bg);
 }
 
 code {
