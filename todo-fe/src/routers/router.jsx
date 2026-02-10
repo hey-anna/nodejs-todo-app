@@ -4,6 +4,7 @@ import TodoPage from "../pages/TodoPage";
 import SignInPage from "../pages/SignInPage";
 import SignupPage from "../pages/SignupPage";
 import RequireAuth from "../auth/RequireAuth";
+import RequireGuest from "../auth/RequireGuest";
 
 export const router = createBrowserRouter([
   {
@@ -18,8 +19,22 @@ export const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
-      { path: "signin", element: <SignInPage /> },
-      { path: "signup", element: <SignupPage /> },
+      {
+        path: "signin",
+        element: (
+          <RequireGuest>
+            <SignInPage />
+          </RequireGuest>
+        ),
+      },
+      {
+        path: "signup",
+        element: (
+          <RequireGuest>
+            <SignupPage />
+          </RequireGuest>
+        ),
+      },
     ],
   },
 ]);
