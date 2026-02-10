@@ -16,5 +16,3 @@ import { createContext } from "react";
 
 /** @type {import("react").Context<AuthContextValue | null>} */
 export const AuthContext = createContext(null);
-
-export const STORAGE_KEY = "todo_auth";

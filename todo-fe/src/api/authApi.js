@@ -1,4 +1,4 @@
-import api from "../utils/api";
+import api from "./client";
 import { handleApiError } from "../utils/error";
 
 // 회원가입: POST /api/users

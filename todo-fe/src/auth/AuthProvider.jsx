@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { signinApi, signupApi } from "../api/authApi";
-import { AuthContext, STORAGE_KEY } from "./AuthContext";
+import { AuthContext } from "./AuthContext";
+import { STORAGE_KEY } from "../constants/storage";
 
 const readAuthFromStorage = () => {
   const saved = sessionStorage.getItem(STORAGE_KEY);

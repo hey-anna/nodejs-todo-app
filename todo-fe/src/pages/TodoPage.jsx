@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 
-import api from "../utils/api";
+import api from "../api/client";
 
 function TodoPage() {
   const [todoList, setTodoList] = useState([]);

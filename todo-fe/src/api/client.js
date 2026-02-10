@@ -1,11 +1,11 @@
 import axios from "axios";
+import { STORAGE_KEY } from "../constants/storage";
 
 /**
  * Axios instance (Vite)
  * - env: VITE_BACKEND_URL (e.g., http://localhost:5050)
  * - baseURL: `${VITE_BACKEND_URL}/api`
  */
-export const STORAGE_KEY = "todo_auth";
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || "http://localhost:5050";
 
