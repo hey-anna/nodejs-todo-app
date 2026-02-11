@@ -1,7 +1,6 @@
-const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
+const { Schema, model } = require("mongoose");
 
-const taskSchema = Schema(
+const taskSchema = new Schema(
   {
     task: {
       type: String,
@@ -9,12 +8,18 @@ const taskSchema = Schema(
     },
     isComplete: {
       type: Boolean,
+      default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
+      index: true,
     },
   },
   { timestamps: true }, // createdAt/updatedAt 자동 생성
 );
 
-const Task = mongoose.model("Task", taskSchema);
+const Task = model("Task", taskSchema);
 
 module.exports = Task;
