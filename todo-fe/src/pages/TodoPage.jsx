@@ -13,8 +13,12 @@ function TodoPage() {
 
   // 리스트 요청
   const getTasks = async () => {
-    const response = await api.get("/tasks");
-    setTodoList(response.data.data);
+    try {
+      const response = await api.get("/tasks");
+      setTodoList(response.data.data);
+    } catch (err) {
+      console.log("getTasks error", err);
+    }
   };
 
   // 추가
@@ -25,7 +29,7 @@ function TodoPage() {
         isComplete: false,
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         setTodoValue("");
         getTasks();
       } else {
