@@ -19,6 +19,7 @@ const userSchema = new Schema(
     password: {
       type: String,
       required: true,
+      select: false,
     },
   },
   { timestamps: true }, // 유저가 언제 생성되는지 기록
@@ -75,6 +76,8 @@ module.exports = User;
  * userSchema.methods.toJSON = function () {
  *   const obj = this._doc;
  *   delete obj.password;
+ *   delete obj.updatedAt;
+ *   delete obj.__v
  *   return obj;
  * };
  *

@@ -1,5 +1,11 @@
 const jwt = require("jsonwebtoken");
 
+// 역할: JWT 토큰 검증 미들웨어
+// - Authorization: Bearer <token> 형식 확인
+// - jwt.verify로 유효성 검증
+// - 성공 시 req.userId(req.userEmail) 세팅 후 next()
+// ※ 여기서는 DB 조회(유저 찾기)를 하지 않는다. (역할 분리)
+
 module.exports = function auth(req, res, next) {
   const authHeader = req.headers.authorization;
 

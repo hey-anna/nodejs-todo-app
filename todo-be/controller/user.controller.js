@@ -1,11 +1,17 @@
 const bcrypt = require("bcryptjs");
 const User = require("../model/User");
 
-const SALT_ROUNDS = 10; // 해싱 연산 강도(cost factor)
+// 역할: User 리소스 관련 컨트롤러
+// - createUser: 회원가입(중복 체크 + 비번 해싱 + 저장)
+// - loginUser: 로그인(비번 검증 + JWT 발급)
+// - me: 로그인한 유저 조회(auth 미들웨어가 req.userId를 세팅)
+
+const SALT_ROUNDS = 10; // 해싱 연산 강도(cost factor), 값이 높을수록 더 느리지만 보안성↑
 
 const userController = {};
 
 // 회원가입
+// POST /api/users
 userController.createUser = async (req, res) => {
   try {
     const { email, name, password } = req.body;
@@ -35,18 +41,18 @@ userController.createUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt); // password 유저한테 패스워드 받아서, salt 암호화 비밀번호 해싱
 
     // 3. 유저 저장
-    const newUser = new User({
+    const user = new User({
       email,
       name,
       password: hashedPassword, // 평문이 아닌 해싱된 비밀번호만 저장
     });
 
-    await newUser.save();
+    await user.save();
 
     // 4. 응답 보내기
     res.status(201).json({
       message: "회원가입 성공",
-      id: newUser._id,
+      id: user._id,
     });
   } catch (error) {
     // (중요) unique 중복키 에러(E11000) -> 409로 처리
@@ -56,43 +62,42 @@ userController.createUser = async (req, res) => {
       });
     }
 
-    res.status(500).json({
-      message: "서버 오류 발생",
+    return res.status(500).json({
+      message: "회원가입 중 서버 오류가 발생했습니다.",
       error: error.message,
     });
   }
 };
 
 // 로그인
+// POST /api/users/login
 userController.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     // 입력값 검증
     if (!email || !password) {
-      return res.status(400).json({
-        message: "이메일과 비밀번호를 입력해주세요",
-      });
+      return res
+        .status(400)
+        .json({ message: "이메일/비밀번호를 입력해 주세요." });
     }
 
     // DB에서 입력받은 이메일로 가입된 유저 조회
-    // (안전장치) 나중에 password를 select:false로 바꿔도 로그인에서 가져오도록 +password
-    // const user = await User.findOne({ email }).select("+password");
-    const user = await User.findOne({ email });
+    // (안전장치) password를 select:false로 숨겨도 로그인에서는 +password로 가져옴
+    const user = await User.findOne({ email }).select("+password");
 
     // user 없음 / password 틀림을 같은 메시지 + 같은 코드(401)로 통일
-    if (!user) {
-      return res.status(401).json({
-        message: "이메일 또는 비밀번호가 올바르지 않습니다",
-      });
-    }
+    if (!user)
+      return res
+        .status(401)
+        .json({ message: "이메일 또는 비밀번호가 올바르지 않습니다" });
 
     // bcrypt.compare로 입력된 비밀번호 vs DB 해시 비교
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(401).json({
-        message: "이메일 또는 비밀번호가 올바르지 않습니다",
-      });
+      return res
+        .status(401)
+        .json({ message: "이메일 또는 비밀번호가 올바르지 않습니다" });
     }
 
     // JWT 토큰 발급(User 모델 메서드 사용)
@@ -109,10 +114,32 @@ userController.loginUser = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
-      message: "서버 오류 발생",
+    return res.status(500).json({
+      message: "로그인 처리 중 오류가 발생했습니다.",
       error: error.message,
     });
+  }
+};
+
+// GET /api/users/me (auth 미들웨어 필요: req.userId 세팅 후 조회)
+userController.me = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("-password -__v");
+    if (!user) {
+      return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+    }
+
+    return res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    return res
+      .status(500)
+      .json({ message: "유저 정보 조회 중 오류가 발생했습니다." });
   }
 };
 
