@@ -6,7 +6,7 @@ const TodoItem = ({ item, deleteTask, toggleComplete }) => {
       <Col xs={12}>
         <div className={`todo-item ${item.isComplete ? "done" : ""}`}>
           <div className="todo-content">{item.task}</div>
-
+          <div>{item.owner.name}</div>
           <div>
             <button className="button-delete" onClick={() => deleteTask(item._id)}>
               삭제
